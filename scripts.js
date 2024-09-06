@@ -1,3 +1,6 @@
+//declaring the databse 
+const db = require('./database.js');
+
 const register = document.querySelector("#option2");  
 const signIn = document.querySelector("#option1"); 
 const subRegister = document.querySelector(".submitRegister"); 
@@ -8,8 +11,7 @@ const registerEmail = document.querySelector(".userRegister .email");
 const registerPassword = document.querySelector(".userRegister .password"); 
 const registerName = document.querySelector(".userRegister .name"); 
 
-//declaring the databse 
-const db = require('./database.js');
+
 
 
 
@@ -30,12 +32,21 @@ signIn.addEventListener("click", () =>{
 subRegister.addEventListener("click", (event)=>{
     event.preventDefault();
     console.log('subregister');
-    //take the value of the email and the 
+    //take the value of the email and the the pass word and check if it is already reagisterd in the database, if yes log them in and send them to annother page
+    //if not then the webpage should show an error saying that they are not registers 
 }); 
 
 subSignin.addEventListener("click", (event)=> {
-    event.preventDefault();
-    console.log('subsing');
+   const email = logInEmail.value; 
+   if(isValidEmail(email)){
+    db.getUsersByEmail(email, ()=>{
+        window.location.href = "todoPage.html"
+    })
+   }
+   else{
+    setTimeout(document.querySelector(".email-notFound").style.display = "block", 2000)
+    
+   }
 }); 
 
 const isValidEmail =(email) =>  {

@@ -78,3 +78,21 @@ input[type=submit]:hover{
     cursor: pointer;
     background-color: rgb(63, 63, 255);
 }
+.email-error{
+    background-color: red;
+    max-width: 500px;
+    justify-content: center;
+    text-align: center;
+    padding: 10px;
+    font-weight: bold;
+    display: none;
+}
+.email-notFound{
+    background-color: red;
+    max-width: 500px;
+    justify-content: center;
+    text-align: center;
+    padding: 10px;
+    font-weight: bold;
+    display: none;
+}

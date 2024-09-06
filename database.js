@@ -39,4 +39,13 @@ function closeDb() {
   db.close();
 }
 
-module.exports = { addUser, getUsers, closeDb };
+function getUsersByEmail(email, callback){
+  db.get("SELECT * FROM users WHERE email = ?", [email], (err, row) =>{
+    if (err){
+      return callback(err)
+    }
+    callback(null, row);
+  }); 
+}
+
+module.exports = { addUser, getUsers, getUsersByEmail, closeDb };
