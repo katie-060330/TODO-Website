@@ -31,9 +31,12 @@ signIn.addEventListener("click", () =>{
 
 subRegister.addEventListener("click", (event)=>{
     event.preventDefault();
-    console.log('subregister');
+    console.log('sub register');
     //take the value of the email and the the pass word and check if it is already reagisterd in the database, if yes log them in and send them to annother page
     //if not then the webpage should show an error saying that they are not registers 
+    db.addUser((gnerateid(), registerName.value, registerEmail.value, registerPassword.value, "") =>{
+        
+    })
 }); 
 
 subSignin.addEventListener("click", (event)=> {
