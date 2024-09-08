@@ -1,5 +1,4 @@
-//declaring the databse 
-const db = require('./database.js');
+import { getUsers, addUser } from './database.js';
 
 const register = document.querySelector("#option2");  
 const signIn = document.querySelector("#option1"); 
@@ -12,6 +11,24 @@ const registerPassword = document.querySelector(".userRegister .password");
 const registerName = document.querySelector(".userRegister .name"); 
 
 
+
+
+async function displayUsers() {
+  const users = await getUsers();
+  console.log(users);
+}
+
+document.getElementById('loadUsers').addEventListener('click', displayUsers);
+
+// Functionality for adding a user
+document.getElementById('addUser').addEventListener('click', async () => {
+  const userData = {
+    name: "New User",
+    email: "newuser@example.com"
+  };
+  await addUser(userData);
+  alert('User added!');
+});
 
 
 
@@ -30,26 +47,14 @@ signIn.addEventListener("click", () =>{
 }); 
 
 subRegister.addEventListener("click", (event)=>{
-    event.preventDefault();
-    console.log('sub register');
+   
     //take the value of the email and the the pass word and check if it is already reagisterd in the database, if yes log them in and send them to annother page
     //if not then the webpage should show an error saying that they are not registers 
-    db.addUser((gnerateid(), registerName.value, registerEmail.value, registerPassword.value, "") =>{
-        
-    })
+
 }); 
 
 subSignin.addEventListener("click", (event)=> {
-   const email = logInEmail.value; 
-   if(isValidEmail(email)){
-    db.getUsersByEmail(email, ()=>{
-        window.location.href = "todoPage.html"
-    })
-   }
-   else{
-    setTimeout(document.querySelector(".email-notFound").style.display = "block", 2000)
-    
-   }
+  
 }); 
 
 const isValidEmail =(email) =>  {

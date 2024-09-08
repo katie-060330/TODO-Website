@@ -1,51 +1,24 @@
-// db.js
-const sqlite3 = require('sqlite3').verbose();
-const db = new sqlite3.Database('mydatabase.db');
+// database.js
+import { initializeApp } from 'firebase/app';
+import { getFirestore, collection, getDocs, addDoc } from 'firebase/firestore';
 
-// Ensure the operations are done in order
-db.serialize(() => {
-    // Drop the table if it exists
-    db.run("DROP TABLE IF EXISTS users");
-  
-    // Create the table with columns: id, name, email, password, and list
-    db.run("CREATE TABLE users (id INT, name TEXT, email TEXT, password TEXT, list TEXT)");
-  });
-  
+const firebaseConfig = {
+  // Your Firebase configuration
+};
 
-// Function to add a user to the database
-function addUser(id, name, email, password, list, callback) {
-  const stmt = db.prepare("INSERT INTO users (id, name, email, password, list) VALUES (?, ?, ?, ?, ?)");
-  stmt.run(id, name, email, password, list, function(err) {
-    if (err) {
-      return callback(err);
-    }
-    callback(null, this.lastID); // Return the ID of the inserted row
-  });
-  stmt.finalize(); // Ensure resources are freed
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+
+// Function to fetch users
+export async function getUsers() {
+  const usersCol = collection(db, 'users');
+  const userSnapshot = await getDocs(usersCol);
+  return userSnapshot.docs.map(doc => doc.data());
 }
 
-// Function to retrieve users from the database
-function getUsers(callback) {
-  db.all("SELECT * FROM users", (err, rows) => {
-    if (err) {
-      return callback(err);
-    }
-    callback(null, rows); // Return the rows
-  });
+// Function to add a user
+export async function addUser(userData) {
+  const usersCol = collection(db, 'users');
+  await addDoc(usersCol, userData);
 }
 
-// Function to close the database connection
-function closeDb() {
-  db.close();
-}
-
-function getUsersByEmail(email, callback){
-  db.get("SELECT * FROM users WHERE email = ?", [email], (err, row) =>{
-    if (err){
-      return callback(err)
-    }
-    callback(null, row);
-  }); 
-}
-
-module.exports = { addUser, getUsers, getUsersByEmail, closeDb };
